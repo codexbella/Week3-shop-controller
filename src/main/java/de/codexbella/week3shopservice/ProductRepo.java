@@ -1,18 +1,17 @@
 package de.codexbella.week3shopservice;
 
+import org.springframework.stereotype.Repository;
+
 import java.util.List;
 
+@Repository
 public class ProductRepo {
-    private List<Product> productList;//TODO change to Hashmap
+
+    private List<Product> productList;
 
     public ProductRepo(List<Product> productList) {
         this.productList = productList;
     }
-
-    /*public ProductRepo() {
-        this.productList = List.of();//erstellt ein leeres ProductRepo
-    }*/
-    //TODO noch ein Konstruktor ohne Übergabe der productList und add-Methode
 
     public String getProductName(int id) {
         List<Product> productList = this.productList;
@@ -39,4 +38,13 @@ public class ProductRepo {
             }
             throw new RuntimeException("Product not available.");
     }
+
+    public boolean initializeProductList() {
+        return productList.add(new Product("Tauchsäge", 70010010))
+                && productList.add(new Product("Führungsschiene für Tauchsäge", 70010011))
+                && productList.add(new Product("Winkelschleifer", 70010020))
+                && productList.add(new Product("Multitool", 70010030))
+                && productList.add(new Product("Druckluftschrauber", 70010040))
+                && productList.add(new Product("Absaugmobil", 70010000))
+                && productList.add(new Product("Kompressor", 70010001));    }
 }

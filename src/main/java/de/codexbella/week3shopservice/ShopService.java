@@ -1,7 +1,10 @@
 package de.codexbella.week3shopservice;
 
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 
+@Service
 public class ShopService {
     private final ProductRepo productRepo;
     private final OrderRepo orderRepo;
@@ -33,5 +36,9 @@ public class ShopService {
 
     public boolean placeOrder(List<Product> productsForOrder) {
         return orderRepo.add(productsForOrder);
+    }
+
+    public boolean initializeProductList() {
+        return productRepo.initializeProductList();
     }
 }

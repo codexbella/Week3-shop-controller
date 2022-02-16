@@ -1,7 +1,10 @@
 package de.codexbella.week3shopservice;
 
+import org.springframework.stereotype.Repository;
+
 import java.util.List;
 
+@Repository
 public class OrderRepo {
     private List<Order> orderList;//TODO change to Hashmap
 
@@ -25,8 +28,11 @@ public class OrderRepo {
     }
 
     public boolean add(List<Product> productsForOrder) {
-        int newOrderID = orderList.get(orderList.size()-1).getOrderID() + 1;
-        Order newOrder = new Order(newOrderID, productsForOrder);
-        return orderList.add(newOrder);
+        if (orderList.isEmpty() == true) {
+            return orderList.add(new Order(10000, productsForOrder));
+        } else {
+            int newOrderID = orderList.get(orderList.size()-1).getOrderID() + 1;
+            return orderList.add(new Order(newOrderID, productsForOrder));
+        }
     }
 }

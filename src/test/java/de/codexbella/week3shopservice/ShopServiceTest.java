@@ -2,11 +2,24 @@ package de.codexbella.week3shopservice;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.mockito.Mockito.when;
+
 class ShopServiceTest {
+    @Test
+    void shouldReturnASingleProductByIDWithMock() {
+        ProductRepo mockProductRepo = Mockito.mock(ProductRepo.class);
+        OrderRepo mockOrderRepo = Mockito.mock(OrderRepo.class);
+
+        ShopService testShopService = new ShopService(mockProductRepo, mockOrderRepo);
+        when(mockProductRepo.getProductName(70010010)).thenReturn("Tauchsäge");
+
+        Assertions.assertEquals("Tauchsäge", testShopService.getProductName(70010010));
+    }
     @Test
     void shouldReturnASingleProductByID() {
         Product testProduct1 = new Product("Tauchsäge", 70010010);
@@ -18,6 +31,7 @@ class ShopServiceTest {
 
         Assertions.assertEquals("Tauchsäge", testShopService.getProductName(70010010));
     }
+
     @Test
     void shouldReturnNotPartOfInventory() {
         Product testProduct1 = new Product("Tauchsäge", 70010010);
@@ -28,6 +42,21 @@ class ShopServiceTest {
         ShopService testShopService = new ShopService(testProductRepo, new OrderRepo(List.of()));
 
         Assertions.assertEquals("Product not part of inventory.", testShopService.getProductName(70010000));
+    }
+    @Test
+    void shouldReturnAllProductsWithMock() {
+        ProductRepo mockProductRepo = Mockito.mock(ProductRepo.class);
+        OrderRepo mockOrderRepo = Mockito.mock(OrderRepo.class);
+
+        ShopService testShopService = new ShopService(mockProductRepo, mockOrderRepo);
+
+        Product testProduct1 = new Product("Tauchsäge", 70010010);
+        Product testProduct2 = new Product("Führungsschiene für Tauchsäge", 70010011);
+        Product testProduct3 = new Product("Winkelschleifer", 70010020);
+        List<Product> testProductList = List.of(testProduct1, testProduct2, testProduct3);
+        when(testShopService.getProductList()).thenReturn(testProductList);
+
+        Assertions.assertEquals(testProductList, testShopService.getProductList());
     }
     @Test
     void shouldReturnAllProducts() {
