@@ -30,16 +30,6 @@ class ShopServiceTest {
         Assertions.assertEquals("Product not part of inventory.", testShopService.getProductName(70010000));
     }
     @Test
-    void shouldReturnProductNotInList() {
-        Product testProduct1 = new Product("Tauchsäge", 70010010);
-        List<Product> testProductList = List.of(testProduct1);
-        ProductRepo testProductRepo = new ProductRepo(testProductList);
-
-        ShopService testShopService = new ShopService(testProductRepo, new OrderRepo(List.of()));
-
-        Assertions.assertEquals("Product not part of inventory.", testShopService.getProductName(70010040));
-    }
-    @Test
     void shouldReturnAllProducts() {
         Product testProduct1 = new Product("Tauchsäge", 70010010);
         Product testProduct2 = new Product("Führungsschiene für Tauchsäge", 70010011);
@@ -212,23 +202,19 @@ class ShopServiceTest {
         productsForOrder3.add(testProductRepo.getProduct(70010010));
         productsForOrder3.add(testProductRepo.getProduct(70010000));
 
-        Order testOrder1 = new Order(1001, productsForOrder1);
-        Order testOrder2 = new Order(1002, productsForOrder2);
-        Order testOrder3 = new Order(1003, productsForOrder3);
-
         List<Order> testOrderList = new ArrayList<>();
-        testOrderList.add(testOrder1);
-        testOrderList.add(testOrder2);
-        testOrderList.add(testOrder3);
+        testOrderList.add(new Order(1001, productsForOrder1));
+        testOrderList.add(new Order(1002, productsForOrder2));
+        testOrderList.add(new Order(1003, productsForOrder3));
 
         OrderRepo testOrderRepo = new OrderRepo(testOrderList);
 
         List<Product> productsForOrder4 = new ArrayList<>();
         productsForOrder4.add(testProductRepo.getProduct(70010001));
 
-        testOrderRepo.add(productsForOrder4);
-
         ShopService testShopService = new ShopService(testProductRepo, testOrderRepo);
+
+        testShopService.placeOrder(productsForOrder4);
 
         String expected = "Order no. 1004, [product name: Kompressor, product id: 70010001]";
 

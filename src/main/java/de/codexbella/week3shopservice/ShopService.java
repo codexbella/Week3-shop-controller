@@ -30,4 +30,8 @@ public class ShopService {
     public Product getProduct(int id) {
         return productRepo.getProduct(id);
     }
+
+    public boolean placeOrder(List<Product> productsForOrder) {
+        return orderRepo.add(productsForOrder);
+    }
 }

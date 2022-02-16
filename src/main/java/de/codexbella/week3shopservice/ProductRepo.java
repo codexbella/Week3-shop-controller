@@ -8,6 +8,10 @@ public class ProductRepo {
     public ProductRepo(List<Product> productList) {
         this.productList = productList;
     }
+
+    /*public ProductRepo() {
+        this.productList = List.of();//erstellt ein leeres ProductRepo
+    }*/
     //TODO noch ein Konstruktor ohne Übergabe der productList und add-Methode
 
     public String getProductName(int id) {

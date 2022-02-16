@@ -24,9 +24,9 @@ public class OrderRepo {
         return orderList;
     }
 
-    public void add(List<Product> productsForOrder) {
+    public boolean add(List<Product> productsForOrder) {
         int newOrderID = orderList.get(orderList.size()-1).getOrderID() + 1;
         Order newOrder = new Order(newOrderID, productsForOrder);
-        orderList.add(newOrder);
+        return orderList.add(newOrder);
     }
 }
