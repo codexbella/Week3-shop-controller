@@ -2,6 +2,7 @@ package de.codexbella.week3shopservice;
 
 import org.springframework.stereotype.Repository;
 
+import java.security.InvalidParameterException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -22,10 +23,7 @@ public class OrderRepo {
         Optional<Order> currentOrderOptional = orderList.stream()
                 .filter(order -> order.getOrderID() == id)
                 .findFirst();
-        if (currentOrderOptional.isPresent()) {
-            return currentOrderOptional.get();
-        }
-        throw new RuntimeException("No such order in order repo.");
+        return currentOrderOptional.orElseThrow(() -> new InvalidParameterException("No such order in order repo."));
     }
 
     public List<Order> getOrders() {

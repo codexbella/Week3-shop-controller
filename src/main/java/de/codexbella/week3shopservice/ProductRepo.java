@@ -2,7 +2,9 @@ package de.codexbella.week3shopservice;
 
 import org.springframework.stereotype.Repository;
 
+import java.security.InvalidParameterException;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class ProductRepo {
@@ -15,10 +17,9 @@ public class ProductRepo {
 
     public String getProductName(int id) {
         List<Product> productList = this.productList;
-        for (int i = 0; i < productList.size(); i++) { //TODO replace with for each
-            Product currentProduct = productList.get(i);
-            if (currentProduct.getProductID() == id) {
-                return currentProduct.getName();
+        for (Product p : productList) {
+            if (p.getProductID() == id) {
+                return p.getName();
             }
         }
         return "Product not part of inventory.";
@@ -30,13 +31,10 @@ public class ProductRepo {
 
     public Product getProduct(int id) {
         List<Product> productList = this.productList;
-            for (int i = 0; i < productList.size(); i++) {
-                Product currentProduct = productList.get(i);
-                if (currentProduct.getProductID() == id) {
-                    return currentProduct;
-                }
-            }
-            throw new RuntimeException("Product not available.");
+        Optional<Product> currentProductOptional = productList.stream()
+                .filter(product -> product.getProductID() == id)
+                .findFirst();
+        return currentProductOptional.orElseThrow(() -> new InvalidParameterException("Product not available."));
     }
 
     public boolean initializeProductList() {
