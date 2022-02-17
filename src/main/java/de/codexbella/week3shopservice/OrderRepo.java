@@ -3,6 +3,9 @@ package de.codexbella.week3shopservice;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Repository
 public class OrderRepo {
@@ -14,11 +17,13 @@ public class OrderRepo {
 
     public Order getOrder(int id) {
         List<Order> orderList = this.orderList;
-        for (int i = 0; i < orderList.size(); i++) {//TODO replace with for each
-            Order currentOrder = orderList.get(i);
-            if (currentOrder.getOrderID() == id) {
-                return currentOrder;
-            }
+        //Order currentOrder = orderList.stream().filter(order -> order.getOrderID() == id).toList().get(0);
+        //oder (mit Optional):
+        Optional<Order> currentOrderOptional = orderList.stream()
+                .filter(order -> order.getOrderID() == id)
+                .findFirst();
+        if (currentOrderOptional.isPresent()) {
+            return currentOrderOptional.get();
         }
         throw new RuntimeException("No such order in order repo.");
     }
